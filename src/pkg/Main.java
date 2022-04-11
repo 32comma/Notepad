@@ -2,6 +2,8 @@ package pkg;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -54,6 +56,10 @@ public class Main extends JFrame {
 	}
 
 	public void setOptions() {
+		Toolkit toolkit =  Toolkit.getDefaultToolkit(); 
+		Image img = toolkit.getImage("notepad.png");
+		setIconImage(img);
+		setTitle("¸Þ¸ðÀå");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(400, 400);
 		setLocationRelativeTo(null);
@@ -88,7 +94,7 @@ public class Main extends JFrame {
 				}
 			}
 		});
-	
+
 		menuLoad.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
