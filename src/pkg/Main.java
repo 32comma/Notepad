@@ -7,6 +7,7 @@ import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
@@ -19,6 +20,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Main extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -31,9 +33,9 @@ public class Main extends JFrame {
 	private JMenu menuSave;
 	private JMenu menuLoad;
 	private JPanel southPanel;
-	private JLabel testLabel = new JLabel("test");
+	private JLabel backgroundImageLabel = new JLabel("");
 	private ImageIcon backgroundImageIcon;
-
+	private String tempPath="";
 	public void setNew() {
 		backgroundImageIcon = new ImageIcon("bg.png");
 		southPanel = new JPanel();
@@ -41,8 +43,8 @@ public class Main extends JFrame {
 		menuNew = new JMenu("NEW");
 		menuSave = new JMenu("SAVE");
 		menuLoad = new JMenu("LOAD");
-		titleLabel = new JLabel("Title");
-		textArea = new JTextArea("Test");
+		titleLabel = new JLabel("blank");
+		textArea = new JTextArea("");
 		centerPanel = new JPanel();
 		scrollPane = new JScrollPane(textArea);
 	}
@@ -54,13 +56,13 @@ public class Main extends JFrame {
 	}
 
 	public void setComponents() {
-		testLabel.setIcon(backgroundImageIcon);
+		backgroundImageLabel.setIcon(backgroundImageIcon);
 		titleLabel.setForeground(Color.white);
 		centerPanel.add(scrollPane, BorderLayout.CENTER);
 		centerPanel.add(titleLabel, BorderLayout.NORTH);
 		centerPanel.setBackground(Color.darkGray);
 		centerPanel.setSize(400, 400);
-		southPanel.add(testLabel);
+		southPanel.add(backgroundImageLabel);
 		add(southPanel, BorderLayout.SOUTH);
 		add(centerPanel, BorderLayout.CENTER);
 		setJMenuBar(menuBar);
@@ -87,33 +89,39 @@ public class Main extends JFrame {
 		menuSave.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+
 				JFileChooser fileChooser = new JFileChooser();
+				FileNameExtensionFilter filter = new FileNameExtensionFilter("TEXT FILES", "txt", "text");
+				fileChooser.setFileFilter(filter);
 				int result = fileChooser.showOpenDialog(Main.this);
+				PrintWriter pw = null;
 				if (result == JFileChooser.APPROVE_OPTION) {
 					File selectedFile = fileChooser.getSelectedFile();
-					System.out.println(selectedFile);
-					PrintWriter pw = null;
+					//임시폴더 지정해서 위치 임시로 편하게 열수 있도록 만들 예정입니다!
 					try {
 						pw = new PrintWriter(selectedFile);
-						StringBuffer sb = new StringBuffer(textArea.getText());
-						pw.println(sb.toString());
-					} catch (Exception e1) {
+						pw.println(textArea.getText());
+						titleLabel.setText(selectedFile.getName());
+					} catch (FileNotFoundException e1) {
 						e1.printStackTrace();
 					} finally {
 						pw.close();
 					}
-
 				}
+
 			}
+
 		});
 
 		menuLoad.addMouseListener(new MouseAdapter() {
+
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				JFileChooser fileChooser = new JFileChooser();
 				int result = fileChooser.showOpenDialog(Main.this);
 				if (result == JFileChooser.APPROVE_OPTION) {
 					File selectedFile = fileChooser.getSelectedFile();
+					titleLabel.setText(selectedFile.getName());
 					System.out.println(selectedFile);
 					Scanner sc = null;
 					try {
@@ -137,6 +145,7 @@ public class Main extends JFrame {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				titleLabel.setText("blank");
 				textArea.setText("");
 			}
 
