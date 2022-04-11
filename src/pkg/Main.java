@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -20,6 +21,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 public class Main extends JFrame {
+	private static final long serialVersionUID = 1L;
 	private JPanel centerPanel;
 	private JLabel titleLabel;
 	private JTextArea textArea;
@@ -28,8 +30,13 @@ public class Main extends JFrame {
 	private JMenu menuNew;
 	private JMenu menuSave;
 	private JMenu menuLoad;
+	private JPanel southPanel;
+	private JLabel testLabel = new JLabel("test");
+	private ImageIcon backgroundImageIcon;
 
 	public void setNew() {
+		backgroundImageIcon = new ImageIcon("bg.png");
+		southPanel = new JPanel();
 		menuBar = new JMenuBar();
 		menuNew = new JMenu("NEW");
 		menuSave = new JMenu("SAVE");
@@ -47,27 +54,32 @@ public class Main extends JFrame {
 	}
 
 	public void setComponents() {
+		testLabel.setIcon(backgroundImageIcon);
 		titleLabel.setForeground(Color.white);
 		centerPanel.add(scrollPane, BorderLayout.CENTER);
 		centerPanel.add(titleLabel, BorderLayout.NORTH);
 		centerPanel.setBackground(Color.darkGray);
+		centerPanel.setSize(400, 400);
+		southPanel.add(testLabel);
+		add(southPanel, BorderLayout.SOUTH);
 		add(centerPanel, BorderLayout.CENTER);
 		setJMenuBar(menuBar);
 	}
 
 	public void setOptions() {
-		Toolkit toolkit =  Toolkit.getDefaultToolkit(); 
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
 		Image img = toolkit.getImage("notepad.png");
 		setIconImage(img);
 		setTitle("¸Þ¸ðÀå");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(400, 400);
+		setSize(400, 500);
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}
 
 	public void setLayouts() {
 		setLayout(new BorderLayout());
+		southPanel.setLayout(new BorderLayout());
 		centerPanel.setLayout(new BorderLayout());
 	}
 
